@@ -403,6 +403,11 @@ def _get_timm_hf_config(model_name: str):
     from transformers import AutoConfig
 
     hf_config = AutoConfig.from_pretrained(model.default_cfg["hf_hub_id"])
+    hf_config.hidden_size = hf_config.num_features
+    hf_config.num_hidden_layers = len(model.blocks)
+    hf_config.num_attention_heads = model.blocks[0].attn.num_heads
+    hf_config.intermediate_size = model.blocks[0].mlp.fc1.out_features
+    hf_config.num_classes = model.num_classes
     return hf_config
 
 

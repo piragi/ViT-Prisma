@@ -232,12 +232,11 @@ class VisionModelSAERunnerConfig:
     @property
     def total_training_images(self):
         """Returns the total number of training images based on dataset and epochs."""
-        # if self.dataset_name == "imagenet1k":
-        dataset_size = 1_300_000
-        # else:
-        #     raise ValueError(
-        #         "Your current dataset is not supported by the VisionModelSAERunnerConfig"
-        #     )
+        # Allow override via dataset_size attribute if it exists
+        if hasattr(self, 'dataset_size') and self.dataset_size is not None:
+            dataset_size = self.dataset_size
+        else:
+            dataset_size = 1_300_000
         return int(dataset_size * self.num_epochs)
 
     @property
